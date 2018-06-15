@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div id='app'>
+        <h3>姓名</h3>
+        <p>{{name}}</p>
+        <h3>年龄</h3>
+        <p>{{age}}</p>
+    </div>
+</body>
+</html>
+<script>
+document.addEventListener('load', function(){
+    let opt = {el:'#app', data:{name:'loading...', age:30}}
+    let vm = new MVVM(opt)
+    setTimeout(() => {
+        opt.data.name = 'idsbllp'
+    }, 2000);
+}, false)
+
+const isElementNode = el => {
+  return Object.prototype.toString.call(el) === "[object HTMLElement]";
+}
+
+const isTextNode = el => {
+  return el.nodeType === 3;
+}
+
+const isObject = val => {
+  return Object.prototype.toString.call(el) === "[object Object]";
+}
+
+class MVVM {
+  constructor(options = {}) {
+    this.$options = options;
+    this.$data = options.data;
+    this.$el = document.querySelector(options.el);
+
+    this.observer = new Observer(options.data);
+    this.compile = new Compile(this.$el, this);
+  }
+
+}
+
+class Compile {
+  constructor(root, vm) {
+    this.$root = root;
+    this.$vm = vm;
+    this.compileElement(root);
+  }
+
+  compileElement(node) {
+    let children = node.childNodes;
+    children.forEach(child => {
+      if (isElementNode(child)) {
+        this.compileElement(child);
+      } else {
+        this.compileText(child);
+      }
+    });
+  }
+
+  compileText(node) {
+    if (!isTextNode(node)) return;
+
+    let reg = /{{(.*)}}/;
+    if (reg.test(node.childNodes)) {
+      let data = this.$vm.data;
+      let keys = RegExp.$0.split('.');
+      keys.forEach(key => {
+        data = data[key];
+      });
+      node.innerText = data;
+    }
+  }
+
+  compileModel() {
+    let aa;
+  }
+}
+
+class Observer {
+  constructor(data) {
+    this.$data = data;
+    this.walk(data);
+  }
+
+  walk(data) {
+    Object.keys.forEach(key => {
+      let val = data[key];
+      if (val && isObject(val)) {
+        new Observer(val);
+      }
+      this.observerData(data, key);
+    });
+  }
+
+  observerData(value, key) {
+    let dep = new Dep();
+    let target = isObject(value) ? value : {};
+    value = new Proxy(target, {
+      get(target, key, receiver) {
+        if (Dep.target) {
+          dep.depend();
+        }
+        return Reflect.get(target, key, receiver);
+      }
+
+      set(target, key, newVal, receiver) {
+        if (value !== target[key]) {
+          Reflect.set(target, key, value, receiver);
+          new Observer(newVal);
+          dep.notify();
+        }
+      }
+    });
+  }
+}
+
+let uid = 0;
+class Dep {
+  constructor() {
+    this.id = uid++;
+    this.subs = [];
+  }
+
+  addSub(sub) {
+    this.subs.push(sub);
+  }
+
+  depend: function() { 
+    Dep.target.addDep(this);
+  }
+
+  notify() {
+    this.subs.forEach(sub => {
+      sub.update();
+    });
+  }
+}
+Dep.target = null
+
+
+class Watcher {
+  constructor(vm, cb) {
+    this.vm = vm;
+    this.cb = cb;
+    this.depIds = {};
+
+    this.value = this._get();
+  }
+
+  update() {
+    let value = this._get();
+    let oldValue = this.value;
+    if (value !== oldValue) {
+      this.value = value;
+      this.cb.call(this.vm, value, oldValue);
+    }
+  }
+
+  addDep(dep) {
+    if (!this.depIds.hasOwnProperty(dep.id)) {
+      dep.addSub(this);
+      this.depIds[dep.id] = dep;
+    }
+  }
+
+  _get() {
+    Dep.target = this;
+    let value = this.cb();
+    Dep.target = null;
+    return value;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
