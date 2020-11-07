@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 400px;
+      height: 400px;
+      background-color: #ccc;
+    }
+
+    .inner1 {
+      margin: 0 auto;
+      width: 200px;
+      height: 200px;
+      background-color: #aaa;
+    }
+
+    .inner2 {
+      margin: 0 auto;
+      width: 100px;
+      height: 100px;
+      background-color: #888;
+    }
+
+    .inner3 {
+      margin: 0 auto;
+      width: 50px;
+      height: 50px;
+      background-color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>pointer event</h1>
+  <div>
+    <p>pointer event 主要是移动端手机在使用, 在 PC 上，按一下一个键会触发一次 pointerdown, 按下第二个键不会触发，因为PC 只有一个鼠标。</p>
+    <p>当移开绑定事件的元素后松开按键，这时不会触发 pointerup, 这时你可能需要使用到 ‘指针捕捉’，即在 pointerdown 的时候调用 `container.setPointerCapture(event.pointerId)`</p>
+  </div>
+  <h1>mouseover vs mouseenter</h1>
+  <div>
+    <p>mouseover 在鼠标进入绑定事件的元素或者其子元素都会触发，默认会冒泡，可以用 stopPropagation 阻止冒泡</p>
+    <p>mouseenter 指挥在鼠标进入绑定事件的元素触发，不会冒泡</p>
+  </div>
+  <h1>例子</h1>
+  <div class="container">
+    <div class="inner1">
+      <div class="inner2">
+        <div class="inner3"></div>
+      </div>
+    </div>
+  </div>
+  <script src="./index.js"></script>
+</body>
+
+</html>
