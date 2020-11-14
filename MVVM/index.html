@@ -108,7 +108,7 @@ class Observer {
           dep.depend();
         }
         return Reflect.get(target, key, receiver);
-      }
+      },
 
       set(target, key, newVal, receiver) {
         if (value !== target[key]) {
@@ -132,7 +132,7 @@ class Dep {
     this.subs.push(sub);
   }
 
-  depend: function() { 
+  depend() { 
     Dep.target.addDep(this);
   }
 
