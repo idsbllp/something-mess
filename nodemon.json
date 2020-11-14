@@ -1,6 +1,6 @@
 {
-  "watch": ["./src"],
+  "watch": ["./sorting"],
   "ext": "ts",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "TS_NODE_LOG_ERROR=true ts-node ./src/index.ts"
+  "exec": "TS_NODE_LOG_ERROR=true ts-node ./sorting/quick-sort-self.ts"
 }
