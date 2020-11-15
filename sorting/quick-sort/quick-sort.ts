@@ -1,10 +1,4 @@
-import { arr } from '../utils';
-
-const swap = (arr: number[], index1: number, index2: number) => {
-  const temp = arr[index1];
-  arr[index1] = arr[index2];
-  arr[index2] = temp;
-};
+import { arr, swap } from '../utils';
 
 const partition = (arr: number[], firstIndex: number, lastIndex: number) => {
   const pivot = firstIndex;
