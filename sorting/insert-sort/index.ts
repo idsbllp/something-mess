@@ -1,6 +1,6 @@
 import { arr } from '../utils';
 
-const insertSorting = (arr: number[]) => {
+export const insertSorting = (arr: number[]) => {
   const length = arr.length;
 
   for (let i = 1; i < length; i++) {

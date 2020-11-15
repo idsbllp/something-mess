@@ -2,5 +2,5 @@
   "watch": ["./sorting/**"],
   "ext": "ts",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "TS_NODE_LOG_ERROR=true ts-node ./sorting/insert-sort/index.ts"
+  "exec": "TS_NODE_LOG_ERROR=true ts-node ./sorting/shell-sort/index.ts"
 }
